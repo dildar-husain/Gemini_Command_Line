@@ -6,7 +6,6 @@ Gemini Command Line - A command-line interface for Google's Gemini AI
 import os
 import sys
 import argparse
-from typing import Optional
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -38,7 +37,10 @@ class GeminiCLI:
         """
         try:
             response = self.model.generate_content(message)
-            return response.text
+            if hasattr(response, 'text') and response.text:
+                return response.text
+            else:
+                return "Error: No response text received from Gemini"
         except Exception as e:
             return f"Error: {str(e)}"
     
@@ -61,7 +63,10 @@ class GeminiCLI:
         
         try:
             response = self.chat.send_message(message)
-            return response.text
+            if hasattr(response, 'text') and response.text:
+                return response.text
+            else:
+                return "Error: No response text received from Gemini"
         except Exception as e:
             return f"Error: {str(e)}"
     
