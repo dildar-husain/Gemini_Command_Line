@@ -141,6 +141,13 @@ Examples:
     
     args = parser.parse_args()
     
+    # Check if user wants to do something that requires API key
+    if not args.query and not args.interactive:
+        # No arguments provided, show help
+        parser.print_help()
+        print("\nTip: Use --interactive to start a chat session or --query to ask a question")
+        sys.exit(0)
+    
     # Load environment variables
     load_dotenv()
     
@@ -163,10 +170,6 @@ Examples:
         elif args.interactive:
             # Interactive mode
             cli.interactive_mode()
-        else:
-            # No arguments provided, show help
-            parser.print_help()
-            print("\nTip: Use --interactive to start a chat session or --query to ask a question")
             
     except Exception as e:
         print(f"Error initializing Gemini: {str(e)}", file=sys.stderr)
